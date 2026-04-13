@@ -15,7 +15,7 @@ Quick checklist before going live.
 
 ## Step 3 — GreenAPI (WhatsApp)
 - [ ] Update instance URL in all HTTP Request nodes
-- [ ] Update WhatsApp Group Chat ID (`923070650940@c.us` → your group)
+- [ ] Update WhatsApp Group Chat ID (`92307065....@c.us` → your group)
 
 ## Step 4 — Google Sheet
 - [ ] Create sheet with columns: `Name | Number | Thread Id | Chat History | Chat Mode`
@@ -23,7 +23,7 @@ Quick checklist before going live.
 
 ## Step 5 — OpenAI Assistant
 - [ ] Create Assistant in OpenAI platform with bot script
-- [ ] Copy Assistant ID → replace `asst_WGbxqmCg1rA70ZkPqd0k6fQd`
+- [ ] Copy Assistant ID → replace `asst_WGbxqmCg1rA70ZkPqd.....`
 
 ## Step 6 — Email
 - [ ] Update `samad125612@gmail.com` to real accounting email in all Gmail nodes
@@ -41,13 +41,13 @@ Quick checklist before going live.
 
 | Placeholder | Replace With |
 |---|---|
-| `7103` | Your GreenAPI instance |
-| `7103242575` | Your WhatsApp instance ID |
-| `3d98966d04804...` | Your GreenAPI API token |
-| `923070650940@c.us` | Your expert WhatsApp group ID |
-| `1hfyzxeTQs0yODvu...` | Your Google Sheet ID |
-| `asst_WGbxqmCg1rA70ZkPqd0k6fQd` | Your OpenAI Assistant ID |
+| `71... | Your GreenAPI instance |
+| `7103......` | Your WhatsApp instance ID |
+| `3d98966........` | Your GreenAPI API token |
+| `92307065....@c.us` | Your expert WhatsApp group ID |
+| `1hfyzxeTQ.........` | Your Google Sheet ID |
+| `asst_WGbxqmCg1rA.........` | Your OpenAI Assistant ID |
 | `samad125612@gmail.com` | Your accounting email |
-| `rNjm517Ey2CKNLo3` | Will auto-update with new credentials |
-| `kFDxtbPhnBTQa5eL` | Will auto-update with new credentials |
-| `62IiiQVdsIGUQMiN` | Will auto-update with new credentials |
+| `rNjm517Ey2.....` | Will auto-update with new credentials |
+| `kFDxtbPhnBT.....` | Will auto-update with new credentials |
+| `62IiiQVdsIG......` | Will auto-update with new credentials |
