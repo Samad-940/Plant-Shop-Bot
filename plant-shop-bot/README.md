@@ -68,15 +68,15 @@ URL: https://YOUR_INSTANCE.api.greenapi.com/waInstanceXXXXXXXX/sendMessage/YOUR_
 ```
 
 Replace:
-- `7103` → your GreenAPI instance number
-- `7103242575` → your WhatsApp instance ID
-- `3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1` → your API token
+- `71..` → your GreenAPI instance number
+- `710324....` → your WhatsApp instance ID
+- `3d98966d04804dadb930d30b0f4affadbb085...38b27......` → your API token
 
 ### 4. Update WhatsApp Group Chat ID
 
 In nodes that send to the expert group, change:
 ```
-923070650940@c.us  →  YOUR_WHATSAPP_GROUP_ID@g.us
+92307065....@c.us  →  YOUR_WHATSAPP_GROUP_ID@g.us
 ```
 
 Nodes to update:
@@ -99,7 +99,7 @@ Your sheet must have these columns:
 
 In all `Message a model*` (assistant type) nodes, update:
 ```
-asst_WGbxqmCg1rA70ZkPqd0k6fQd  →  YOUR_ASSISTANT_ID
+asst_WGbxqmCg1rA70ZkPq......  →  YOUR_ASSISTANT_ID
 ```
 
 ### 7. Update Email Addresses
@@ -156,6 +156,8 @@ plant-shop-bot/
 ---
 
 ## 📞 Support
-
+## Author :Samadmehboob940@gmail.com
 Built for **Marmelstein Nursery** — מושב גני טל (צמוד לגדרה)  
 Website: https://mermel-nursery.co.il/
+
+
