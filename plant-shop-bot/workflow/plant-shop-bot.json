@@ -1,0 +1,817 @@
+{
+  "name": "Plant Shop Bot - Marmelstein Nursery",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Plant Shop Bot \n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 384,
+        "width": 752
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2328,
+        1056
+      ],
+      "id": "f4f00045-c1af-4b5a-9b15-184b46859924",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_WGbxqmCg1rA70ZkPqd0k6fQd",
+          "mode": "list",
+          "cachedResultName": "Copy of Plant Shop Bot"
+        },
+        "prompt": "define",
+        "text": "=📝 The Ultimate Summary Prompt (For WhatsApp Group)\nRole: You are a professional support coordinator for Marmelstein Nursery.\nTask: Create a structured summary of the chat history to brief a human expert in the WhatsApp group.\n\nSummary Format (Return ONLY this structure):\n\n🌿 פנייה חדשה - [Category Name]\n━━━━━━━━━━━━━━━━━━\n👤 לקוח: [Customer Name]\n📞 טלפון: [Phone Number]\n📦 מספר הזמנה: [Order Number or \"N/A\"]\n\n📝 פרטי הפנייה:\n[Brief 2-3 sentence summary of what the user wants]\n\n✅ מידע שנאסף:\n\n[Detail 1: e.g., \"שתול שנתיים\" / \"השקיה ידנית\"]\n\n[Detail 2: e.g., \"מואר מאוד\" / \"כלי גדול\"]\n\n[Detail 3: e.g., \"יש תמונה\" / \"מצורף צילום מסך\"]\n\n⚠️ הבעיה/הבקשה:\n[The main problem or question the human needs to answer]\n\n━━━━━━━━━━━━━━━━━━\nנא להמשיך טיפול אנושי.\n\nName: \"{{ $('Get row(s) in sheet7').item.json.Name }}\"\n\nPhone:\"{{ $('Get row(s) in sheet7').item.json.Number }}\"\nlast meaasage sent to user:\n{{ $('Message a model11').item.json.output }}\nChat History:{{ $('Get row(s) in sheet7').item.json['Chat History'] }}",
+        "memory": "threadId",
+        "threadId": "={{ $('Get row(s) in sheet7').item.json['Thread Id'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        400,
+        512
+      ],
+      "id": "41e314f5-cbb6-4981-a77c-a395f37f38b5",
+      "name": "Message a model18",
+      "credentials": {
+        "openAiApi": {
+          "id": "rNjm517Ey2CKNLo3",
+          "name": "OpenAi -- Logit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendMessage/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "9230706509..@c.us"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        816,
+        512
+      ],
+      "id": "91d5a1f0-61db-4c86-84c5-cbc61967e893",
+      "name": "HTTP Request47"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg",
+          "mode": "list",
+          "cachedResultName": "Plant Bot Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet7').item.json.row_number }}",
+            "Chat Mode": "=Manual"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {"id": "Name","displayName": "Name","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true,"removed": true},
+            {"id": "Number","displayName": "Number","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true,"removed": true},
+            {"id": "Thread Id","displayName": "Thread Id","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true,"removed": true},
+            {"id": "Chat History","displayName": "Chat History","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true,"removed": true},
+            {"id": "Chat Mode","displayName": "Chat Mode","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true,"removed": false},
+            {"id": "row_number","displayName": "row_number","required": false,"defaultMatch": false,"display": true,"type": "number","canBeUsedToMatch": true,"readOnly": true,"removed": false}
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1168,512],
+      "id": "36c5370e-384d-4f56-93d3-83917813eb79",
+      "name": "Update row in sheet10",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kFDxtbPhnBTQa5eL",
+          "name": "pant sheet samad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+          "conditions": [
+            {
+              "id": "b71aac96-9a3a-4aa4-b23b-3a597ffcd560",
+              "leftValue": "={{ $json.body.senderData.chatId }}",
+              "rightValue": "g.us",
+              "operator": {"type": "string","operation": "notContains"}
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-2000,1280],
+      "id": "9b84d988-895b-4caf-bda9-a266b5f473b2",
+      "name": "If40"
+    },
+    {
+      "parameters": {
+        "sendTo": "samad125612@gmail.com",
+        "subject": "={{ $json.message.content.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.message.content.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [816,896],
+      "id": "11bae30b-53b0-4291-a946-3bb01988b037",
+      "name": "Send a message4",
+      "webhookId": "57ad5e11-b2de-42f7-ad60-fc2f490a60c9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "62IiiQVdsIGUQMiN",
+          "name": "Rohit Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {"__rl": true,"value": "gpt-4o","mode": "list","cachedResultName": "GPT-4O"},
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an assistant that writes clear, professional emails for customer accounting issues based on the full chat history between the user and the bot.\n\nYour task:\nRead the entire chat history.\nChat History:{{ $('Get row(s) in sheet7').item.json['Chat History'] }}\n\nExtract all relevant accounting details and write a concise, professional email.\n\nOutput must be a JSON object:\n{\n  \"subject\": \"...\",\n  \"body\": \"...\"\n}\n\nWrite answer in hebrew.\n\nName: \"{{ $('Get row(s) in sheet7').item.json.Name }}\"\nPhone:\"{{ $('Get row(s) in sheet7').item.json.Number }}\"\nChat History:{{ $('Get row(s) in sheet7').item.json['Chat History'] }},{{ $('Update row in sheet8').item.json[\"Chat History\"] }}",
+              "role": "=user"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [400,896],
+      "id": "c51cf19a-b512-42e2-aed7-4b4a8268fad2",
+      "name": "Message a model20",
+      "credentials": {
+        "openAiApi": {"id": "rNjm517Ey2CKNLo3","name": "OpenAi -- Logit"}
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "samad125612@gmail.com",
+        "subject": "={{ $json.message.content.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.message.content.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [816,704],
+      "id": "8d3e1350-fbaa-41ff-95d8-a7ef652a90c9",
+      "name": "Send a message3",
+      "webhookId": "57ad5e11-b2de-42f7-ad60-fc2f490a60c9",
+      "credentials": {
+        "gmailOAuth2": {"id": "62IiiQVdsIGUQMiN","name": "Rohit Gmail account"}
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {"__rl": true,"value": "gpt-4o","mode": "list","cachedResultName": "GPT-4O"},
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an assistant that writes clear, professional emails for supplier-related inquiries.\n\nOutput must be a JSON object:\n{\n  \"subject\": \"...\",\n  \"body\": \"...\"\n}\n\nWrite answer in hebrew.\nChat History:{{ $('Get row(s) in sheet7').item.json['Chat History'] }},{{ $('Update row in sheet8').item.json[\"Chat History\"] }}",
+              "role": "=user"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [400,704],
+      "id": "18e05865-d3d6-4331-bacd-fd57f4d145f7",
+      "name": "Message a model19",
+      "credentials": {
+        "openAiApi": {"id": "rNjm517Ey2CKNLo3","name": "OpenAi -- Logit"}
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+                "conditions": [{"leftValue": "={{ $json.message.content.action }}","rightValue": "sendtogroup","operator": {"type": "string","operation": "equals"},"id": "af14548f-70a7-42c6-9864-4f9410134153"}],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+                "conditions": [{"id": "de7b6a61-a890-445b-8799-263c96636996","leftValue": "={{ $json.message.content.action }}","rightValue": "suppliermail","operator": {"type": "string","operation": "equals","name": "filter.operator.equals"}}],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+                "conditions": [{"id": "d8cf953b-5f30-4c30-9be6-c7e4a3660ef5","leftValue": "={{ $json.message.content.action }}","rightValue": "accountingmail","operator": {"type": "string","operation": "equals","name": "filter.operator.equals"}}],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [112,688],
+      "id": "92857a10-80d9-4e1f-9e49-6536227ff79b",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit#gid=0"},
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Webhook').item.json.body.senderData.senderName }}",
+            "Number": "={{ $('Webhook').item.json.body.senderData.sender }}",
+            "Thread Id": "={{ $('Message a model16').item.json.threadId }}",
+            "Chat History": "=User:{{ $('Transcribe a recording2').item.json.text }}\n\nBot: {{ $('Message a model16').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {"id": "Name","displayName": "Name","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Number","displayName": "Number","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Thread Id","displayName": "Thread Id","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Chat History","displayName": "Chat History","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true}
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [464,1376],
+      "id": "919d594a-22ed-47bc-86e0-5a9e86e688ed",
+      "name": "Append row in sheet5",
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendMessage/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "chatId","value": "={{ $('Webhook').item.json.body.senderData.chatId }}"},
+            {"name": "message","value": "={{ $json.output }}"},
+            {"name": "typingTime","value": "2000"}
+          ]
+        },
+        "options": {"redirect": {"redirect": {}}}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [112,1376],
+      "id": "1d0656a5-874e-445c-bd0d-f2b4253b6c0e",
+      "name": "HTTP Request46"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {"__rl": true,"value": "asst_WGbxqmCg1rA70ZkPqd0k6fQd","mode": "list","cachedResultName": "Copy of Plant Shop Bot"},
+        "prompt": "define",
+        "text": "=This is the first message from the user so the response should be accordingly\nUser Message: {{ $('Transcribe a recording2').item.json.text }}",
+        "memory": "threadId",
+        "threadId": "={{ $('Get row(s) in sheet8').item.json['Thread Id'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-304,1376],
+      "id": "428eea13-b8c8-4bf1-81cd-444d9d513f6c",
+      "name": "Message a model16",
+      "credentials": {
+        "openAiApi": {"id": "rNjm517Ey2CKNLo3","name": "OpenAi -- Logit"}
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-npiTxO9G7CIaeNI6hs6ByC8_UWTyYOuZMotrlEAA9s/edit#gid=0"},
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet8').item.json.row_number }}",
+            "Chat History": "=User: {{ $('Transcribe a recording2').item.json.text }}\n\nBot:{{ $('Message a model15').item.json.output }}\n\n{{ $('Get row(s) in sheet8').item.json['Chat History'] }}",
+            "Name": "={{ $('Webhook').item.json.body.senderData.senderName }}",
+            "Number": "={{ $('Webhook').item.json.body.senderData.sender }}",
+            "Thread Id": "={{ $('Message a model15').item.json.threadId }}"
+          },
+          "matchingColumns": ["row_number"],
+          "schema": [
+            {"id": "Name","displayName": "Name","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Number","displayName": "Number","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Thread Id","displayName": "Thread Id","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Chat History","displayName": "Chat History","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "row_number","displayName": "row_number","required": false,"defaultMatch": false,"display": true,"type": "number","canBeUsedToMatch": true,"readOnly": true,"removed": false}
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [464,1088],
+      "id": "305b16e9-aac8-4e6e-a61b-32fc6a9c34a9",
+      "name": "Update row in sheet9",
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendMessage/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "chatId","value": "={{ $('Webhook').item.json.body.senderData.chatId }}"},
+            {"name": "message","value": "={{ $json.output }}"},
+            {"name": "typingTime","value": "2000"}
+          ]
+        },
+        "options": {"redirect": {"redirect": {}}}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [112,1088],
+      "id": "bbe38504-6a67-4d63-a6a3-0cfd5cb97c42",
+      "name": "HTTP Request45"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {"__rl": true,"value": "asst_WGbxqmCg1rA70ZkPqd0k6fQd","mode": "list","cachedResultName": "Copy of Plant Shop Bot"},
+        "prompt": "define",
+        "text": "=User Message: {{ $('Transcribe a recording2').item.json.text }}\n\nChat History:{{ $('Get row(s) in sheet8').item.json['Chat History'] }}",
+        "memory": "threadId",
+        "threadId": "={{ $('Get row(s) in sheet8').item.json['Thread Id'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-304,1088],
+      "id": "72a95edf-20c6-427a-af55-3c7e05b53e69",
+      "name": "Message a model15",
+      "credentials": {
+        "openAiApi": {"id": "rNjm517Ey2CKNLo3","name": "OpenAi -- Logit"}
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+          "conditions": [{"id": "00433477-b67b-4f78-8c92-b5de7d2e08be","leftValue": "={{ $('Get row(s) in sheet8').item.json.row_number }}","rightValue": "","operator": {"type": "number","operation": "exists","singleValue": true}}],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-528,1184],
+      "id": "e542a725-0d5f-4488-9d82-32220a031ee8",
+      "name": "If38"
+    },
+    {
+      "parameters": {
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-npiTxO9G7CIaeNI6hs6ByC8_UWTyYOuZMotrlEAA9s/edit#gid=0"},
+        "filtersUI": {
+          "values": [{"lookupColumn": "Number","lookupValue": "={{ $('Webhook').item.json.body.senderData.sender }}"}]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-1328,1184],
+      "id": "7a0cf8f4-c043-4b97-ae8f-a0a3d1d6bef7",
+      "name": "Get row(s) in sheet8",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+          "conditions": [{"id": "57b4e867-82ef-471d-8503-21f87f57cae9","leftValue": "={{ $('Webhook').item.json.body.messageData.fileMessageData.downloadUrl }}","rightValue": "","operator": {"type": "string","operation": "notExists","singleValue": true}}],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-1776,1280],
+      "id": "ea26b4f7-0fc6-4739-b0ea-12f41c96c5ba",
+      "name": "If37"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-752,1184],
+      "id": "91788be3-4267-4635-baf1-3d2801b75a88",
+      "name": "Transcribe a recording2",
+      "credentials": {
+        "openAiApi": {"id": "6Q0WbzrPvpomHWzJ","name": "Tal ChatGpt"}
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').item.json.body.messageData.fileMessageData.downloadUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1040,1184],
+      "id": "f6f2ddfc-f497-40dc-b58f-5991d8565f71",
+      "name": "HTTP Request44"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit#gid=0"},
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Webhook').item.json.body.senderData.senderName }}",
+            "Number": "={{ $('Webhook').item.json.body.senderData.sender }}",
+            "Thread Id": "={{ $('Message a model12').item.json.threadId }}",
+            "Chat History": "=User: {{ $('Webhook').item.json.body.messageData.textMessageData.textMessage }}  Bot: {{ $('Message a model12').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {"id": "Name","displayName": "Name","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Number","displayName": "Number","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Thread Id","displayName": "Thread Id","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Chat History","displayName": "Chat History","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true}
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-528,896],
+      "id": "36004941-95a1-4b34-9624-c2209ba8a7a8",
+      "name": "Append row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendMessage/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "chatId","value": "={{ $('Webhook').item.json.body.senderData.chatId }}"},
+            {"name": "message","value": "={{ $json.output }}"},
+            {"name": "typingTime","value": "2000"}
+          ]
+        },
+        "options": {"redirect": {"redirect": {}}}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-752,896],
+      "id": "1c0ce4c2-dbb7-4102-b8a1-f7e43e575bcb",
+      "name": "HTTP Request43"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {"__rl": true,"value": "asst_WGbxqmCg1rA70ZkPqd0k6fQd","mode": "list","cachedResultName": "Copy of Plant Shop Bot"},
+        "prompt": "define",
+        "text": "=This is the first message from the user so the response should be accordingly\nUser Message: {{ $('Webhook').item.json.body.messageData.textMessageData.textMessage }},{{ $('Webhook').item.json.body.messageData.extendedTextMessageData.text }}",
+        "memory": "threadId",
+        "threadId": "={{ $('Get row(s) in sheet7').item.json['Thread Id'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-1104,896],
+      "id": "b92536b7-8d17-438b-8479-ad7a4f31f632",
+      "name": "Message a model12",
+      "credentials": {
+        "openAiApi": {"id": "rNjm517Ey2CKNLo3","name": "OpenAi -- Logit"}
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendMessage/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "chatId","value": "={{ $('Webhook').item.json.body.senderData.chatId }}"},
+            {"name": "message","value": "={{ $json.output }}"},
+            {"name": "typingTime","value": "2000"}
+          ]
+        },
+        "options": {"redirect": {"redirect": {}}}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-752,704],
+      "id": "4ad45b56-28cf-47ac-833a-2854d8fd19f3",
+      "name": "HTTP Request42"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {"__rl": true,"value": "asst_WGbxqmCg1rA70ZkPqd0k6fQd","mode": "list","cachedResultName": "Copy of Plant Shop Bot"},
+        "prompt": "define",
+        "text": "=User Message: {{ $('Webhook').item.json.body.messageData.textMessageData.textMessage }},\n{{ $('Webhook').item.json.body.messageData.extendedTextMessageData.text }}\nChat History:{{ $('Get row(s) in sheet7').item.json['Chat History'] }}\n",
+        "memory": "threadId",
+        "threadId": "={{ $('Get row(s) in sheet7').item.json['Thread Id'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [-1104,704],
+      "id": "eb1c8f81-7271-47b1-9e10-471594f2f087",
+      "name": "Message a model11",
+      "credentials": {
+        "openAiApi": {"id": "rNjm517Ey2CKNLo3","name": "OpenAi -- Logit"}
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+          "conditions": [{"id": "00433477-b67b-4f78-8c92-b5de7d2e08be","leftValue": "={{ $json.row_number }}","rightValue": "","operator": {"type": "number","operation": "exists","singleValue": true}}],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-1328,800],
+      "id": "3d7b891a-f9ae-4f79-8738-b60d56416529",
+      "name": "If36"
+    },
+    {
+      "parameters": {
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit#gid=0"},
+        "filtersUI": {
+          "values": [{"lookupColumn": "Number","lookupValue": "={{ $('Webhook').item.json.body.senderData.sender }}"}]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-1552,800],
+      "id": "6aff62f8-ef1b-48b2-b4a4-1c0d0ca14b2f",
+      "name": "Get row(s) in sheet7",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {"caseSensitive": true,"leftValue": "","typeValidation": "strict","version": 2},
+          "conditions": [{"id": "57b4e867-82ef-471d-8503-21f87f57cae9","leftValue": "={{ $json.body.messageData.typeMessage }}","rightValue": "audioMessage","operator": {"type": "string","operation": "equals"}}],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-1552,1472],
+      "id": "e888522d-a9a8-4149-8ec9-f6f428523416",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').item.json.body.messageData.fileMessageData.downloadUrl.replace(/\"/g, \"\") }}",
+        "options": {
+          "response": {"response": {"responseFormat": "file"}}
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1040,1768],
+      "id": "913301ff-1ffd-4c97-a943-3ce5581bb074",
+      "name": "HTTP image Download"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendFileByUrl/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "urlFile","value": "=\n{{ $('Webhook').item.json.body.messageData.fileMessageData.downloadUrl.replace(/\"/g, \"\") }}"},
+            {"name": "fileName","value": "plant_image.jpg"},
+            {"name": "caption","value": "=\n\nNursery Customer {{ $('Webhook').item.json.body.senderData.senderName }} send a image."},
+            {"name": "chatId","value": "923070650940@c.us"}
+          ]
+        },
+        "options": {"redirect": {"redirect": {}}}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-752,1768],
+      "id": "7e853572-2bb7-48b5-bf1d-cf56911774e3",
+      "name": "HTTP Request APi Post"
+    },
+    {
+      "parameters": {
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-npiTxO9G7CIaeNI6hs6ByC8_UWTyYOuZMotrlEAA9s/edit#gid=0"},
+        "filtersUI": {
+          "values": [{"lookupColumn": "Number","lookupValue": "={{ $('Webhook').item.json.body.senderData.sender }}"}]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-1328,1768],
+      "id": "3efff157-e341-4b81-8a92-d47dbd8de9d9",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7103.api.greenapi.com/waInstance7103242575/sendMessage/3d98966d04804dadb930d30b0f4affadbb0852d38b274aedb1",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "chatId","value": "={{ $('Webhook').item.json.body.senderData.chatId }}"},
+            {"name": "message","value": "=תודה על התמונה! 📸 איש מקצוע יעבור עליה ויחזור אליך בהקדם."}
+          ]
+        },
+        "options": {"redirect": {"redirect": {}}}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-528,1768],
+      "id": "32768241-98d8-4463-a64b-4525c184abed",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bd963fd9-cb4b-4f97-a184-3e9cc60adb88",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [-2224,1280],
+      "id": "05d53102-62b4-4abe-aade-a34f73219043",
+      "name": "Webhook",
+      "webhookId": "bd963fd9-cb4b-4f97-a184-3e9cc60adb88"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {"__rl": true,"value": "1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg","mode": "list","cachedResultName": "Plant Bot Sheet","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit?usp=drivesdk"},
+        "sheetName": {"__rl": true,"value": "gid=0","mode": "list","cachedResultName": "Sheet1","cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hfyzxeTQs0yODvu-uQMVZZJJaPbd_HTSk4JepncgRUg/edit#gid=0"},
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet7').item.json.row_number }}",
+            "Chat History": "=User:  {{ $('Webhook').item.json.body.messageData.textMessageData.textMessage }}{{ $('Webhook').item.json.body.messageData.extendedTextMessageData.text }}\n\nBot:{{ $('Message a model11').item.json.output }}\n\n{{ $('Get row(s) in sheet7').item.json['Chat History'] }}",
+            "Name": "={{ $('Webhook').item.json.body.senderData.senderName }}",
+            "Number": "={{ $('Webhook').item.json.body.senderData.sender }}",
+            "Thread Id": "={{ $('Message a model11').item.json.threadId }}"
+          },
+          "matchingColumns": ["row_number"],
+          "schema": [
+            {"id": "Name","displayName": "Name","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Number","displayName": "Number","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Thread Id","displayName": "Thread Id","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "Chat History","displayName": "Chat History","required": false,"defaultMatch": false,"display": true,"type": "string","canBeUsedToMatch": true},
+            {"id": "row_number","displayName": "row_number","required": false,"defaultMatch": false,"display": true,"type": "number","canBeUsedToMatch": true,"readOnly": true,"removed": false}
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-528,704],
+      "id": "b956411f-06b8-4169-b3b9-99ef0f22fa72",
+      "name": "Update row in sheet8",
+      "credentials": {
+        "googleSheetsOAuth2Api": {"id": "kFDxtbPhnBTQa5eL","name": "pant sheet samad"}
+      }
+    }
+  ],
+  "connections": {
+    "Message a model18": {"main": [[{"node": "HTTP Request47","type": "main","index": 0}]]},
+    "HTTP Request47": {"main": [[{"node": "Update row in sheet10","type": "main","index": 0}]]},
+    "If40": {"main": [[{"node": "If37","type": "main","index": 0}]]},
+    "Message a model20": {"main": [[{"node": "Send a message4","type": "main","index": 0}]]},
+    "Message a model19": {"main": [[{"node": "Send a message3","type": "main","index": 0}]]},
+    "Switch1": {"main": [[{"node": "Message a model18","type": "main","index": 0}],[{"node": "Message a model19","type": "main","index": 0}],[{"node": "Message a model20","type": "main","index": 0}]]},
+    "Append row in sheet5": {"main": [[]]},
+    "HTTP Request46": {"main": [[{"node": "Append row in sheet5","type": "main","index": 0}]]},
+    "Message a model16": {"main": [[{"node": "HTTP Request46","type": "main","index": 0}]]},
+    "Update row in sheet9": {"main": [[{"node": "Message a model37","type": "main","index": 0}]]},
+    "HTTP Request45": {"main": [[{"node": "Update row in sheet9","type": "main","index": 0}]]},
+    "Message a model15": {"main": [[{"node": "HTTP Request45","type": "main","index": 0}]]},
+    "If38": {"main": [[{"node": "Message a model15","type": "main","index": 0}],[{"node": "Message a model16","type": "main","index": 0}]]},
+    "Get row(s) in sheet8": {"main": [[{"node": "HTTP Request44","type": "main","index": 0}]]},
+    "If37": {"main": [[{"node": "Get row(s) in sheet7","type": "main","index": 0}],[{"node": "If","type": "main","index": 0}]]},
+    "Transcribe a recording2": {"main": [[{"node": "If38","type": "main","index": 0}]]},
+    "HTTP Request44": {"main": [[{"node": "Transcribe a recording2","type": "main","index": 0}]]},
+    "Append row in sheet4": {"main": [[]]},
+    "HTTP Request43": {"main": [[{"node": "Append row in sheet4","type": "main","index": 0}]]},
+    "Message a model12": {"main": [[{"node": "HTTP Request43","type": "main","index": 0}]]},
+    "HTTP Request42": {"main": [[{"node": "Update row in sheet8","type": "main","index": 0}]]},
+    "Message a model11": {"main": [[{"node": "HTTP Request42","type": "main","index": 0}]]},
+    "If36": {"main": [[{"node": "Message a model11","type": "main","index": 0}],[{"node": "Message a model12","type": "main","index": 0}]]},
+    "Get row(s) in sheet7": {"main": [[{"node": "If36","type": "main","index": 0}]]},
+    "If": {"main": [[{"node": "Get row(s) in sheet8","type": "main","index": 0}],[{"node": "Get row(s) in sheet","type": "main","index": 0}]]},
+    "HTTP image Download": {"main": [[{"node": "HTTP Request APi Post","type": "main","index": 0}]]},
+    "HTTP Request APi Post": {"main": [[{"node": "HTTP Request","type": "main","index": 0}]]},
+    "Get row(s) in sheet": {"main": [[{"node": "HTTP image Download","type": "main","index": 0}]]},
+    "HTTP Request": {"main": [[{"node": "If39","type": "main","index": 0}]]},
+    "Webhook": {"main": [[{"node": "If40","type": "main","index": 0}]]},
+    "Update row in sheet8": {"main": [[{"node": "Message a model36","type": "main","index": 0}]]}
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "fab5e947b3b827982a979290d329dc50757b36f3dc3fc091bd36afed96486845"
+  }
+}
